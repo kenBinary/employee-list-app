@@ -14,9 +14,18 @@ namespace API.src.Repository
             _context = context;
         }
 
-        public Task<Employee?> AddEmployee(Employee employee)
+        public async Task<Employee?> AddEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _context.Employees.AddAsync(employee);
+                await _context.SaveChangesAsync();
+                return employee;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public async Task<Employee?> GetEmployee(int id)
