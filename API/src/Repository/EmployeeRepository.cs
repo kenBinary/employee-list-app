@@ -1,5 +1,6 @@
 using API.src.Data;
 using API.src.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.src.Repository
 {
@@ -14,8 +15,16 @@ namespace API.src.Repository
         }
         public async Task<Employee?> GetEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            return employee;
+            try
+            {
+                var employee = await _context.Employees.FindAsync(id);
+                return employee;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
+
     }
 }
