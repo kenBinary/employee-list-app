@@ -41,9 +41,24 @@ namespace API.src.Repository
             }
         }
 
-        public Task<Employee[]?> GetEmployees()
+        public async Task<Employee[]?> GetEmployees()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var employees = await _context.Employees.ToArrayAsync();
+                if (employees.Length > 0)
+                {
+                    return employees;
+                }
+                else
+                {
+                    return [];
+                }
+            }
+            catch (Exception)
+            {
+                return [];
+            }
         }
 
         public Task<Employee?> RemoveEmployee(int id)
