@@ -13,6 +13,12 @@ namespace API.src.Repository
         {
             _context = context;
         }
+
+        public Task<Employee?> AddEmployee(Employee employee)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Employee?> GetEmployee(int id)
         {
             try
@@ -26,5 +32,19 @@ namespace API.src.Repository
             }
         }
 
+        public Task<Employee[]?> GetEmployees()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Employee?> RemoveEmployee(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Employee?> UpdateEmployee(int id, Employee employee)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
