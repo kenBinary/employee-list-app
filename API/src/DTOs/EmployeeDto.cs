@@ -1,6 +1,6 @@
 namespace API.src.DTOs
 {
-    class EmployeeDto
+    public class EmployeeDto
     {
         public string FullName { get; set; } = string.Empty;
 
