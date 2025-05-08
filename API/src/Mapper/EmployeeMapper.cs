@@ -9,6 +9,7 @@ namespace Api.src.Mapper
         {
             return new EmployeeDto
             {
+                Id = employeeModel.Id,
                 FullName = $"{employeeModel.FirstName} {employeeModel.LastName}",
                 Email = employeeModel.Email,
                 Position = employeeModel.Position
