@@ -83,9 +83,30 @@ namespace API.src.Repository
             }
         }
 
-        public Task<Employee?> UpdateEmployee(int id, Employee employee)
+        public async Task<Employee?> UpdateEmployee(int id, Employee updatedEmployee)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingEmployee = await _context.Employees.FindAsync(id);
+
+                if (existingEmployee == null)
+                {
+                    return null;
+                }
+
+                existingEmployee.FirstName = updatedEmployee.FirstName;
+                existingEmployee.LastName = updatedEmployee.LastName;
+                existingEmployee.Email = updatedEmployee.Email;
+                existingEmployee.Position = updatedEmployee.Position;
+
+                await _context.SaveChangesAsync();
+
+                return existingEmployee;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
