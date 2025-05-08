@@ -61,9 +61,26 @@ namespace API.src.Repository
             }
         }
 
-        public Task<Employee?> RemoveEmployee(int id)
+        public async Task<Employee?> RemoveEmployee(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var employee = await _context.Employees.FindAsync(id);
+
+                if (employee == null)
+                {
+                    return null;
+                }
+
+                _context.Employees.Remove(employee);
+                await _context.SaveChangesAsync();
+
+                return employee;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public Task<Employee?> UpdateEmployee(int id, Employee employee)
