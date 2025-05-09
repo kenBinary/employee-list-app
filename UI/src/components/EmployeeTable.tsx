@@ -1,6 +1,7 @@
 import type { Employee } from "../types/employee";
 import { EditButton } from "./EditButton";
 import { DeleteButton } from "./DeleteButton";
+import { ViewButton } from "./ViewButton";
 
 interface EmployeeTableProps {
   employees: Employee[];
@@ -31,6 +32,7 @@ export function EmployeeTable({
                 <td>{employee.email}</td>
                 <td>{employee.position}</td>
                 <td className="flex flex-col gap-1">
+                  <ViewButton employee={employee}></ViewButton>
                   <EditButton
                     employee={employee}
                     refetchNewData={refetchNewData}
