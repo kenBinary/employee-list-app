@@ -2,7 +2,6 @@
 
 ## Demo
 
-
 https://github.com/user-attachments/assets/6c5c365e-18db-431f-936a-66e26dc7ec35
 
 ## Project Overview
@@ -43,6 +42,40 @@ echo Application starting! Check console windows for URLs.
 - ASP.NET Core Web API
 - Entity Framework Core
 - Microsoft SQL Server database
+
+### API Endpoints
+
+The backend API exposes the following endpoints for employee management:
+
+| Method | Endpoint             | Description        | Request Body        | Response                  |
+| ------ | -------------------- | ------------------ | ------------------- | ------------------------- |
+| GET    | `/api/Employee`      | Get all employees  | None                | Array of employee objects |
+| GET    | `/api/Employee/{id}` | Get employee by ID | None                | Single employee object    |
+| POST   | `/api/Employee`      | Add new employee   | `CreateEmployeeDto` | Created employee          |
+| PUT    | `/api/Employee/{id}` | Update employee    | `UpdateEmployeeDto` | Updated employee          |
+| DELETE | `/api/Employee/{id}` | Delete employee    | None                | ID of deleted employee    |
+
+### Request/Response Models
+
+```json
+// CreateEmployeeDto & UpdateEmployeeDto
+{
+  "firstName": "string",
+  "lastName": "string",
+  "email": "string",
+  "position": "string"
+}
+
+// EmployeeDto (Response)
+{
+  "id": 0,
+  "fullName": "string",
+  "email": "string",
+  "position": "string"
+}
+```
+
+The API runs at `http://localhost:5068` by default when started with `dotnet run`.
 
 ## Prerequisites
 
