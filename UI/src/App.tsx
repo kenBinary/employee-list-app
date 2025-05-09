@@ -18,11 +18,15 @@ function App() {
     setSearchId(id);
   };
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, refetch } = useQuery({
     queryKey: ["employees", searchId],
     queryFn: () => fetchEmployees(searchId),
     refetchOnWindowFocus: false,
   });
+
+  const handleRefetch = () => {
+    refetch();
+  };
 
   useEffect(() => {
     if (!isPending && !isError) {
@@ -59,7 +63,7 @@ function App() {
 
   return (
     <main className="flex flex-col justify-start items-center h-dvh relative">
-      <Header></Header>
+      <Header refetchNewData={handleRefetch}></Header>
 
       <SearchBar onSearch={handleSearch}></SearchBar>
 
@@ -86,15 +90,16 @@ function App() {
             <span>Employee With ID {searchId} not found</span>
           </div>
         ) : (
-          <EmployeeTable employees={employees}></EmployeeTable>
+          <EmployeeTable
+            employees={employees}
+            refetchNewData={handleRefetch}
+          ></EmployeeTable>
         )}
 
-        {data && employees.length > 1 && (
-          <PaginationActions
-            pagination={pagination}
-            handlePageChange={handlePageChange}
-          ></PaginationActions>
-        )}
+        <PaginationActions
+          pagination={pagination}
+          handlePageChange={handlePageChange}
+        ></PaginationActions>
       </div>
     </main>
   );

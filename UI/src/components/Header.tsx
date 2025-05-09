@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { addEmployee } from "../services/addEmployee";
 import clsx from "clsx";
 
-export function Header() {
+interface HeaderProps {
+  refetchNewData: () => void;
+}
+
+export function Header({ refetchNewData }: HeaderProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleReset = () => {
@@ -40,12 +44,15 @@ export function Header() {
         position: "",
       });
 
+      refetchNewData();
+
       const timer = setTimeout(() => {
         setIsUserAdded(false);
       }, 2000);
 
       return () => clearTimeout(timer);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, data]);
 
   const handleAddEmployee = () => {

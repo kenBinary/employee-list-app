@@ -1,17 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import { removeEmployee } from "../services/removeEmployee";
+import { useEffect } from "react";
 
 interface DeleteButtonProps {
   employeeId: number;
   employeeName: string;
+  refetchNewData: () => void;
 }
-export function DeleteButton({ employeeId, employeeName }: DeleteButtonProps) {
-  const { refetch } = useQuery({
+export function DeleteButton({
+  employeeId,
+  employeeName,
+  refetchNewData,
+}: DeleteButtonProps) {
+  const { data, refetch } = useQuery({
     queryKey: ["delete_employee"],
     queryFn: () => removeEmployee(employeeId),
     enabled: false,
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    if (data) {
+      refetchNewData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const modalId = `delete_employee_${employeeId}`;
 

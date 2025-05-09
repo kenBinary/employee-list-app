@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Employee } from "../types/employee";
 import type { AddEmployee } from "../types/addEmployee";
 import { useQuery } from "@tanstack/react-query";
@@ -6,8 +6,9 @@ import { updateEmployee } from "../services/updateEmployee";
 
 interface EditButtonProps {
   employee: Employee;
+  refetchNewData: () => void;
 }
-export function EditButton({ employee }: EditButtonProps) {
+export function EditButton({ employee, refetchNewData }: EditButtonProps) {
   const [updatedEmployee, setUpdatedEmployee] = useState<AddEmployee>({
     firstName: employee.fullName.split(" ")[0],
     lastName: employee.fullName.split(" ")[1],
@@ -15,13 +16,20 @@ export function EditButton({ employee }: EditButtonProps) {
     position: employee.position,
   });
 
-  const { error, isError, refetch } = useQuery({
+  const { data, error, isError, refetch } = useQuery({
     queryKey: ["updateEmployee"],
     queryFn: () => {
       return updateEmployee(employee.id, updatedEmployee);
     },
     enabled: false,
   });
+
+  useEffect(() => {
+    if (data) {
+      refetchNewData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const modalId = `edit_employee_${employee.id}`;
 

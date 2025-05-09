@@ -4,8 +4,12 @@ import { DeleteButton } from "./DeleteButton";
 
 interface EmployeeTableProps {
   employees: Employee[];
+  refetchNewData: () => void;
 }
-export function EmployeeTable({ employees }: EmployeeTableProps) {
+export function EmployeeTable({
+  employees,
+  refetchNewData,
+}: EmployeeTableProps) {
   return (
     <div className="overflow-x-auto w-full">
       <table className="table overflow-y-auto h-full">
@@ -27,10 +31,14 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
                 <td>{employee.email}</td>
                 <td>{employee.position}</td>
                 <td className="flex flex-col gap-1">
-                  <EditButton employee={employee} />
+                  <EditButton
+                    employee={employee}
+                    refetchNewData={refetchNewData}
+                  />
                   <DeleteButton
                     employeeId={employee.id}
                     employeeName={employee.fullName}
+                    refetchNewData={refetchNewData}
                   />
                 </td>
               </tr>
