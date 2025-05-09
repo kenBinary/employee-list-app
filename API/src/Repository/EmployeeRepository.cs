@@ -1,4 +1,5 @@
 using API.src.Data;
+using API.src.DTOs;
 using API.src.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -83,7 +84,7 @@ namespace API.src.Repository
             }
         }
 
-        public async Task<Employee?> UpdateEmployee(int id, Employee updatedEmployee)
+        public async Task<Employee?> UpdateEmployee(int id, UpdateEmployeeDto updatedEmployee)
         {
             try
             {

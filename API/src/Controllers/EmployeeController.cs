@@ -68,21 +68,16 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> UpdateEmployee(int id, UpdateEmployeeDto employeeDto)
     {
 
-        var employee = await _repository.GetEmployee(id);
-        if (employee == null)
-        {
-            return NotFound();
-        }
-
-        employee.FirstName = employeeDto.FirstName;
-        employee.LastName = employeeDto.LastName;
-        employee.Email = employeeDto.Email;
-        employee.Position = employeeDto.Position;
-
         try
         {
-            var newEmployee = _repository.UpdateEmployee(id, employee);
-            return CreatedAtAction(nameof(GetEmployee), new { id = employee.Id }, employee);
+            var newEmployee = await _repository.UpdateEmployee(id, employeeDto);
+
+            if (newEmployee == null)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtAction(nameof(GetEmployee), new { id = newEmployee.Id }, newEmployee);
         }
         catch (Exception)
         {
@@ -103,7 +98,10 @@ public class EmployeeController : ControllerBase
         try
         {
             await _repository.RemoveEmployee(id);
-            return Ok();
+            return Ok(new
+            {
+                Id = id
+            });
         }
         catch (Exception)
         {

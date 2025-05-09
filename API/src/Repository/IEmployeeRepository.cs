@@ -1,3 +1,4 @@
+using API.src.DTOs;
 using API.src.Models;
 
 namespace API.src.Repository
@@ -8,6 +9,6 @@ namespace API.src.Repository
         public Task<Employee[]?> GetEmployees();
         public Task<Employee?> AddEmployee(Employee employee);
         public Task<Employee?> RemoveEmployee(int id);
-        public Task<Employee?> UpdateEmployee(int id, Employee employee);
+        public Task<Employee?> UpdateEmployee(int id, UpdateEmployeeDto employee);
     }
 }
