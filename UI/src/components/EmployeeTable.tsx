@@ -8,7 +8,7 @@ interface EmployeeTableProps {
 export function EmployeeTable({ employees }: EmployeeTableProps) {
   return (
     <div className="overflow-x-auto w-full">
-      <table className="table overflow-y-auto">
+      <table className="table overflow-y-auto h-full">
         <thead>
           <tr>
             <th>ID</th>

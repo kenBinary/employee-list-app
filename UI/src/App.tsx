@@ -12,9 +12,15 @@ import { PaginationActions } from "./components/PaginationActions";
 function App() {
   let employees: Employee[] = [];
 
-  const { data, isPending, error, isError } = useQuery({
-    queryKey: ["employees"],
-    queryFn: fetchEmployees,
+  const [searchId, setSearchId] = useState<number | null>(null);
+
+  const handleSearch = (id: number | null) => {
+    setSearchId(id);
+  };
+
+  const { data, isPending, isError } = useQuery({
+    queryKey: ["employees", searchId],
+    queryFn: () => fetchEmployees(searchId),
     refetchOnWindowFocus: false,
   });
 
@@ -44,19 +50,6 @@ function App() {
     }));
   };
 
-  if (isPending) {
-    return (
-      <div className="flex justify-center items-center h-dvh">Loading...</div>
-    );
-  }
-  if (isError) {
-    return (
-      <div className="flex justify-center items-center h-dvh">
-        <p className="text-red-500">Error: {JSON.stringify(error)}</p>
-      </div>
-    );
-  }
-
   if (data) {
     employees = data.slice(
       (pagination.currentPage - 1) * 5,
@@ -65,18 +58,43 @@ function App() {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center h-dvh relative">
+    <main className="flex flex-col justify-start items-center h-dvh relative">
       <Header></Header>
 
-      <SearchBar></SearchBar>
+      <SearchBar onSearch={handleSearch}></SearchBar>
 
       <div className="w-1/2 flex flex-col gap-4 justify-center">
-        <EmployeeTable employees={employees}></EmployeeTable>
+        {isPending ? (
+          <div className="flex justify-center items-center">
+            <span className="loading loading-xl loading-spinner text-primary"></span>
+          </div>
+        ) : isError ? (
+          <div role="alert" className="alert alert-error">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Employee With ID {searchId} not found</span>
+          </div>
+        ) : (
+          <EmployeeTable employees={employees}></EmployeeTable>
+        )}
 
-        <PaginationActions
-          pagination={pagination}
-          handlePageChange={handlePageChange}
-        ></PaginationActions>
+        {data && employees.length > 1 && (
+          <PaginationActions
+            pagination={pagination}
+            handlePageChange={handlePageChange}
+          ></PaginationActions>
+        )}
       </div>
     </main>
   );
