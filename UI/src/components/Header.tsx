@@ -1,10 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import type { AddEmployee } from "../types/addEmployee";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addEmployee } from "../services/addEmployee";
 import clsx from "clsx";
 
 export function Header() {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleReset = () => {
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+  };
+
   const [isUserAdded, setIsUserAdded] = useState(false);
 
   const [newEmployee, setNewEmployee] = useState<AddEmployee>({
@@ -83,7 +91,7 @@ export function Header() {
               </button>
             </form>
             <h3 className="font-bold text-lg">Add a new Employee!</h3>
-            <div className="flex flex-col gap-4 mt-4">
+            <form ref={formRef} className="flex flex-col gap-4 mt-4">
               <div>
                 <input
                   type="text"
@@ -159,11 +167,12 @@ export function Header() {
                   Please enter a valid position
                 </div>
               </div>
-            </div>
+            </form>
 
             <button
               className="btn btn-info btn-sm mt-4"
               onClick={() => {
+                handleReset();
                 handleAddEmployee();
               }}
             >
