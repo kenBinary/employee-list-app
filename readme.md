@@ -2,7 +2,8 @@
 
 ## Demo
 
-<video controls src="demo.mp4" title="Title"></video>
+
+https://github.com/user-attachments/assets/6c5c365e-18db-431f-936a-66e26dc7ec35
 
 ## Project Overview
 
