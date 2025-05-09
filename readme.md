@@ -12,6 +12,14 @@ Employee List Application that supports CRUD operations
 
 Use the script `start-app.bat` to quickly run the app
 
+Update the database connection string in appsettings.json first (**Important**):
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=YOUR_SERVER_NAME;Database=Employees;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;"
+}
+```
+
 ```batch
 @echo off
 echo Starting Employee List Application...
@@ -102,7 +110,7 @@ ensure the following are installed:
    dotnet restore
    ```
 
-3. Update the database connection string in appsettings.json if necessary:
+3. Update the database connection string in appsettings.json (**Important**):
 
    ```json
    "ConnectionStrings": {
