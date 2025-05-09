@@ -1,0 +1,13 @@
+@echo off
+echo Starting Employee List Application...
+
+echo Starting Backend API...
+start cmd /k "cd API && dotnet run"
+
+echo Waiting for backend to initialize...
+timeout /t 10
+
+echo Starting Frontend UI...
+start cmd /k "cd UI && npm run dev"
+
+echo Application starting! Check console windows for URLs.
