@@ -3,6 +3,7 @@ import type { AddEmployee } from "../types/addEmployee";
 import { useEffect, useRef, useState } from "react";
 import { addEmployee } from "../services/addEmployee";
 import clsx from "clsx";
+import { isValidEmail } from "../util/isValidEmail";
 
 interface HeaderProps {
   refetchNewData: () => void;
@@ -61,6 +62,9 @@ export function Header({ refetchNewData }: HeaderProps) {
     );
     if (emptyField) {
       alert("Please fill in all fields");
+      return;
+    } else if (!isValidEmail(newEmployee.email)) {
+      alert("Please enter a valid email");
       return;
     } else {
       (document.getElementById("add_employee") as HTMLDialogElement)?.close();
