@@ -15,7 +15,7 @@ export async function updateEmployee(
   });
 
   if (!response.ok) {
-    throw new Error("Failed to add employee");
+    throw new Error("Failed to update employee with id: " + id);
   }
 
   return response.json();

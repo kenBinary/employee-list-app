@@ -3,6 +3,7 @@ import type { Employee } from "../types/employee";
 import type { AddEmployee } from "../types/addEmployee";
 import { useQuery } from "@tanstack/react-query";
 import { updateEmployee } from "../services/updateEmployee";
+import { isValidEmail } from "../util/isValidEmail";
 
 interface EditButtonProps {
   employee: Employee;
@@ -34,11 +35,15 @@ export function EditButton({ employee, refetchNewData }: EditButtonProps) {
   const modalId = `edit_employee_${employee.id}`;
 
   const handleUpdateEmployee = () => {
-    const emptyField = Object.values(updateEmployee).some(
+    const emptyField = Object.values(updatedEmployee).some(
       (value) => value.trim() === ""
     );
+
     if (emptyField) {
-      alert("Please fill in all fields");
+      alert("Please fill all the fields");
+      return;
+    } else if (!isValidEmail(updatedEmployee.email)) {
+      alert("Please enter a valid email");
       return;
     } else {
       (document.getElementById(modalId) as HTMLDialogElement)?.close();
@@ -47,11 +52,7 @@ export function EditButton({ employee, refetchNewData }: EditButtonProps) {
   };
 
   if (isError) {
-    return (
-      <div className="flex justify-center items-center h-dvh">
-        <p className="text-red-500">Error: {JSON.stringify(error)}</p>
-      </div>
-    );
+    console.error("Error updating employee:", error);
   }
 
   return (
