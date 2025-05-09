@@ -10,23 +10,19 @@ import type { Pagination } from "./types/pagination";
 import { PaginationActions } from "./components/PaginationActions";
 
 function App() {
-  let employees: Employee[] = [];
-
   const [searchId, setSearchId] = useState<number | null>(null);
-
-  const handleSearch = (id: number | null) => {
-    setSearchId(id);
-  };
 
   const { data, isPending, isError, refetch } = useQuery({
     queryKey: ["employees", searchId],
     queryFn: () => fetchEmployees(searchId),
     refetchOnWindowFocus: false,
+    initialData: [],
   });
 
-  const handleRefetch = () => {
-    refetch();
-  };
+  const [pagination, setPagination] = useState<Pagination>({
+    currentPage: 1,
+    totalPages: Math.ceil(data.length / 5),
+  });
 
   useEffect(() => {
     if (!isPending && !isError) {
@@ -37,12 +33,13 @@ function App() {
     }
   }, [data, isPending, isError]);
 
-  employees = data || [];
+  const handleSearch = (id: number | null) => {
+    setSearchId(id);
+  };
 
-  const [pagination, setPagination] = useState<Pagination>({
-    currentPage: 1,
-    totalPages: Math.ceil(employees.length / 5),
-  });
+  const handleRefetch = () => {
+    refetch();
+  };
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > pagination.totalPages) {
@@ -53,6 +50,8 @@ function App() {
       currentPage: newPage,
     }));
   };
+
+  let employees: Employee[] = [];
 
   if (data) {
     employees = data.slice(
