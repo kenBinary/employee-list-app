@@ -1,7 +1,7 @@
-using API.src.DTOs;
-using API.src.Models;
+using API.src.Application.DTOs;
+using API.src.Domain.Entities;
 
-namespace Api.src.Mapper
+namespace API.src.Application.Mappings
 {
     public static class EmployeeMapper
     {

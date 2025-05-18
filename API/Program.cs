@@ -1,5 +1,6 @@
-using API.src.Data;
-using API.src.Repository;
+using API.src.Domain.Interfaces;
+using API.src.Infrastructure.Data;
+using API.src.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

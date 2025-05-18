@@ -1,7 +1,7 @@
-using API.src.Models;
+using API.src.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.src.Data
+namespace API.src.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {

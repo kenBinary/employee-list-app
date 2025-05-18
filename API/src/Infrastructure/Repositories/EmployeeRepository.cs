@@ -1,9 +1,10 @@
-using API.src.Data;
-using API.src.DTOs;
-using API.src.Models;
+using API.src.Application.DTOs;
+using API.src.Domain.Entities;
+using API.src.Domain.Interfaces;
+using API.src.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.src.Repository
+namespace API.src.Infrastructure.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {

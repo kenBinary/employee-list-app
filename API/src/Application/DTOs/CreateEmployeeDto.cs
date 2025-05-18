@@ -1,11 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace API.src.Models
+namespace API.src.Application.DTOs
 {
-    public class Employee
+    public class CreateEmployeeDto
     {
-        public int Id { get; set; }
-
         [Required]
         [StringLength(100)]
         public string FirstName { get; set; } = string.Empty;

@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace API.src.DTOs;
+namespace API.src.Application.DTOs;
 
-public class CreateEmployeeDto
+public class UpdateEmployeeDto
 {
     [Required]
     [StringLength(100)]

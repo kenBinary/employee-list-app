@@ -1,7 +1,7 @@
-using API.src.DTOs;
-using API.src.Models;
+using API.src.Application.DTOs;
+using API.src.Domain.Entities;
 
-namespace API.src.Repository
+namespace API.src.Domain.Interfaces
 {
     public interface IEmployeeRepository
     {

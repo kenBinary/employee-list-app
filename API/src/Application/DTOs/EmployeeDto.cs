@@ -1,4 +1,4 @@
-namespace API.src.DTOs
+namespace API.src.Application.DTOs
 {
     public class EmployeeDto
     {
