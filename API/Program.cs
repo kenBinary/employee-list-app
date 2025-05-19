@@ -15,6 +15,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Configure mediator
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrEmpty(connectionString))
 {

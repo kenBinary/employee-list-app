@@ -1,7 +1,9 @@
 using API.src.Application.DTOs;
+using API.src.Application.Features.EmployeeFeature.Commands;
+using API.src.Application.Features.EmployeeFeature.Querries;
 using API.src.Application.Mappings;
 using API.src.Domain.Entities;
-using API.src.Domain.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.src.API.Controllers
@@ -10,18 +12,18 @@ namespace API.src.API.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
+        private readonly IMediator _mediator;
 
-        private readonly IEmployeeRepository _repository;
-
-        public EmployeeController(IEmployeeRepository repository)
+        public EmployeeController(IMediator mediator)
         {
-            _repository = repository;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployees()
+        public async Task<ActionResult<EmployeeDto[]>> GetEmployees()
         {
-            var employees = await _repository.GetEmployees();
+            var query = new GetEmployeesQuery();
+            var employees = await _mediator.Send(query);
 
             if (employees != null)
             {
@@ -36,8 +38,8 @@ namespace API.src.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployeeDto>> GetEmployee(int id)
         {
-
-            var employee = await _repository.GetEmployee(id);
+            var query = new GetEmployeeQuery(id);
+            var employee = await _mediator.Send(query);
 
             if (employee == null)
             {
@@ -50,16 +52,14 @@ namespace API.src.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> CreateEmployee(CreateEmployeeDto employeeDto)
         {
+            var command = new CreateEmployeeCommand(
+                employeeDto.FirstName,
+                employeeDto.LastName,
+                employeeDto.Email,
+                employeeDto.Position
+            );
 
-            var employee = new Employee
-            {
-                FirstName = employeeDto.FirstName,
-                LastName = employeeDto.LastName,
-                Email = employeeDto.Email,
-                Position = employeeDto.Position,
-            };
-
-            var addedEmployee = await _repository.AddEmployee(employee);
+            var employee = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(GetEmployee), new { id = employee.Id }, employee);
         }
@@ -67,17 +67,24 @@ namespace API.src.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEmployee(int id, UpdateEmployeeDto employeeDto)
         {
-
             try
             {
-                var newEmployee = await _repository.UpdateEmployee(id, employeeDto);
+                var command = new UpdateEmployeeCommand(
+                    id,
+                    employeeDto.FirstName,
+                    employeeDto.LastName,
+                    employeeDto.Email,
+                    employeeDto.Position
+                );
 
-                if (newEmployee == null)
+                var updatedEmployee = await _mediator.Send(command);
+
+                if (updatedEmployee == null)
                 {
                     return NotFound();
                 }
 
-                return CreatedAtAction(nameof(GetEmployee), new { id = newEmployee.Id }, newEmployee);
+                return CreatedAtAction(nameof(GetEmployee), new { id = updatedEmployee.Id }, updatedEmployee);
             }
             catch (Exception)
             {
@@ -88,8 +95,9 @@ namespace API.src.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
+            var query = new GetEmployeeQuery(id);
+            var employee = await _mediator.Send(query);
 
-            var employee = await _repository.GetEmployee(id);
             if (employee == null)
             {
                 return NotFound();
@@ -97,17 +105,15 @@ namespace API.src.API.Controllers
 
             try
             {
-                await _repository.RemoveEmployee(id);
-                return Ok(new
-                {
-                    Id = id
-                });
+                var command = new DeleteEmployeeCommand(id);
+                await _mediator.Send(command);
+
+                return Ok(new { Id = id });
             }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-
         }
     }
 }
